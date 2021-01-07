@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Using TheMovieDB</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="css/index.css">
+    <!-- API version 3 documentation: 
+        https://developers.themoviedb.org/3/search
+        https://developers.themoviedb.org/3/movies
+    -->
+</head>
+
+<body>
+    <h1>Movie Ratings Calculator</h1>
+    <h3>Enter Keyword to search for movie ratings with the keyword</h3>
+    <input type="text" id="buttonInput" value="Movie Keyword">
+    <p id="p1">Year (optional): </p>
+    <input type="text" id="buttonTime" value="" maxlength="4" size="4">
+    <button onclick="myFunction()">Search</button>
+    <br></br>
+    <div id="results" ></div>
+    <br>
+    <div  id="body" ></div>
+    <br>
+    <div id="output" class="outputs">
+        <!-- output will go here -->
+        
+    </div>
+    <div id="output2" class="outputs">
+        <!-- output will go here -->
+    </div>
+    <script src="./js/key.js"></script>
+    <script src="./js/index.js"></script>
+    
+</body>
+</html>
