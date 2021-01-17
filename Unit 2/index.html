@@ -1,4 +1,3 @@
-
 <!-- Welcome to some sample code to control your Firebase Database -->
 <!-- HERE IS YOUR HTML TO SET UP YOUR PAGE -->
 <html>
@@ -14,27 +13,55 @@
         <!-- Add SDKs for Firebase products that you want to use 
           https://firebase.google.com/docs/web/setup#available-libraries -->
  
-    </head>
+    <script>function lti_launch( vars ) { var query = ''; for(var key in vars) { if(query.length == 0) { query += '?' + key + '=' + encodeURIComponent(vars[key]); } else { query += '&' + key + '=' + encodeURIComponent(vars[key]); } } location.replace( '/d2l/customization/pearsonlti/6606/Launch' + query ); }</script><script src="/d2l/common/math/MathML.js?v=20.20.12.26290-31"></script><script>document.addEventListener('DOMContentLoaded', function() { D2LMathML.DesktopInit('https://s.brightspace.com/lib/mathjax/2.7.4/MathJax.js?config=MML_HTMLorMML','https://s.brightspace.com/lib/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML%2cSafe','130'); });</script><script>window.addEventListener('message', function(event) { 
+					if( !event.data ) {
+						return;
+					}
+					var params;
+					try {
+						params = JSON.parse( event.data );
+					}
+					catch {
+						return;
+					}
+					if( !params.subject || params.subject !== 'lti.frameResize' ) {
+						return;
+					}
+					const MAX_FRAME_HEIGHT = 10000
+					if( !params.height || params.height < 1 || params.height > MAX_FRAME_HEIGHT ) {
+						console.warn( 'Invalid height value received, aborting' );
+						return;
+					}
+					var el = document.getElementsByTagName( 'iframe' );
+					for ( var i=0; i < el.length; i++ ) {
+						if( el[i].contentWindow === event.source ) {
+							el[i].style.height = params.height + 'px';
+							el[i].style.width = '100%';
+							console.info( 'Setting iFrame height to ' + params.height );
+							console.info( 'Setting iFrame width to 100%' );
+						}
+					}
+				});</script></head>
 
     <body >
-        <h1 id="uid"></h1>
-        
-        <!-- HERE IS YOUR HTML CODE TO SET TEXT -->
-        <h3>A demonstration of how to "set" and "get" information in the database</h3>
+            <h1 id="uid"></h1>
+            
+            <!-- HERE IS YOUR HTML CODE TO SET TEXT -->
+            <h3>A demonstration of how to "set" and "get" information in the database</h3>
 
-        <button onclick = "signin()" >Sign In</button>
-        
-        <input type="text" id="student" value="Enter Student">
-        <input type="text" id="subject" value="Enter Subject">
-        <input type="text" id="mark" value="Enter Mark">
+            <button onclick = "signin()" >Sign In</button>
+           
+            <input type="text" id="student" value="Enter Student">
+            <input type="text" id="subject" value="Enter Subject">
+            <input type="text" id="mark" value="Enter Mark">
 
-        <button onclick = "setData()" >Set Data</button>
-        <button onclick = "getData()" >Get data</button>
+            <button onclick = "setData()" >Set Data</button>
+            <button onclick = "getData()" >Get data</button>
 
-        <p>Current Data:</p>
+            <p>Current Data:</p>
 
-        <!-- ol means ordered list -->
-        <p><ol id="studentList"></ol><ol id="subjectList"></ol><ol id="markList"></ol></p>    
+            <!-- ol means ordered list -->
+            <p><ol id="studentList"></ol><ol id="subjectList"></ol><ol id="markList"></ol></p>    
                  
     </body>
     
@@ -58,8 +85,7 @@
             messagingSenderId: "321750309997",
             appId: "1:321750309997:web:826162a774ead2c9cd7364",
             measurementId: "G-H97MBNCCQE"
-        };
-
+        }
         firebase.initializeApp(config);
         //firebase.analytics();
 
@@ -104,7 +130,7 @@
             // Grab the Name, Subject, and Grade obtained from the HTML frontend textboxes
             var sname = document.getElementById("student").value;
             var ssubject = document.getElementById("subject").value;
-            var smark = document.getElementById("mark").value;
+            var smark = parseInt(document.getElementById("mark").value);
             
             // Create a JSON object to add to the database with user-inputted data
             var data = 
@@ -125,13 +151,19 @@
 
             // Create a reference to a particular location or "node"
             // 'StudentInfo'is the name of the main branch in the database
-            var ref = database.ref('StudentInfo');
-            
+            var ref = database.ref('StudentInfo')
+            //var ref = database.ref('StudentInfo').orderByKey().equalTo('-MQNPoEy3JUUjH7Cqsu3');
+            //var ref = database.ref('StudentInfo').orderByChild('name').equalTo('a')
+
             // we will make reference to each 'value' of a database object which will have 
             // two helper functions latched "on" to it to perform additional tasks 
             // - either we have access to data values, or we don't and there is an error
 
-            ref.on('value', gotData, errData) 
+            //This version turns on the switch to keep getting data
+            //ref.on('value', gotData, errData) 
+
+            //This version only gets the data once on demand
+            ref.once('value', gotData, errData)
             // jump to the helper function...think of 'value' as the parameter that is passed
 
         } // end getdata

@@ -15,7 +15,7 @@
         let configData = null;
         let baseImageURL = null;
         
-        function myFunction() {
+        function buttonClick() {
             var search = document.getElementById("buttonInput").value;
             var release = document.getElementById("buttonTime").value;
            // document.getElementById("demo").innerHTML = search;
