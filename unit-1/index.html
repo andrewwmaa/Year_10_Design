@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Using TheMovieDB</title>
+    <title>Movie Ratings Calculator</title>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="css/index.css">
+    <link rel="icon" 
+      type="image/png" 
+      href="favicon.png">
     <!-- API version 3 documentation: 
         https://developers.themoviedb.org/3/search
         https://developers.themoviedb.org/3/movies
@@ -12,8 +15,9 @@
 </head>
 
 <body>
+    
     <h1>Movie Ratings Calculator</h1>
-    <h3>Enter Keyword to search for movie ratings with the keyword</h3>
+    <h3>Enter keyword and movie release year to search for movie ratings:</h3>
     <input type="text" id="buttonInput" value="Movie Keyword">
     <p id="p1">Year (optional): </p>
     <input type="text" id="buttonTime" value="" maxlength="4" size="4">
@@ -136,6 +140,7 @@
             
     <script src="./js/key.js"></script>
     <script src="./js/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     
 </body>
 </html>
