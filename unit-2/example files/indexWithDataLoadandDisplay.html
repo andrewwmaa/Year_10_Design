@@ -1,0 +1,107 @@
+<html>
+    <head>
+        <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-database.js"></script>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+    </head>
+
+    <body >
+            <input type="text" id="jobId" value="Enter Job ID">
+            <br>           
+            <input type="text" id="jobName" value="Enter Job Title">
+            <input type="text" id="jobDesc" value="Enter Description">
+            <input type="text" id="hrate" value="Enter Hourly Rate">
+            <br>
+            <button onclick = "setData()" >Set Data</button>
+            <button onclick = "deleteData()" >Delete data</button>
+            <div id='jobList'></div>
+    </body>
+    
+    <script>
+
+        var provider = new firebase.auth.EmailAuthProvider();
+
+        var config = 
+        {
+            apiKey: "AIzaSyCxbKu9UjC2GOH19mt7JPYiOo-mxocEMuA",
+            authDomain: "bloom-7e038.firebaseapp.com",
+            databaseURL: "https://bloom-7e038-default-rtdb.firebaseio.com",
+            projectId: "bloom-7e038",
+            storageBucket: "bloom-7e038.appspot.com",
+            messagingSenderId: "834274125562",
+            appId: "1:834274125562:web:ad13e32d48fc33d434cb43",
+            measurementId: "G-X0Q9L945DV"
+        };
+
+        firebase.initializeApp(config);
+        var database = firebase.database();
+        var ref = database.ref('jobInfo');
+        ref.once('value', gotData, errData)
+
+
+        function gotData(data)
+        {
+            var jobData = data.val();
+            console.log(jobData);
+
+            if (jobData != null)
+            {
+                var keys = Object.keys(jobData);
+                console.log(keys);
+
+                for (var i = 0; i < keys.length; i++)
+                {
+                    var k = keys[i];
+                    var jobName = jobData[k].jobName;
+                    var jobDesc = jobData[k].jobDesc;
+                    var hrate = jobData[k].hrate;
+                    var oListJobs = document.getElementById('jobList');
+                    var entry = document.createElement('li');
+                    entry.appendChild(document.createTextNode(jobName + " - " + jobDesc + " - " + mark));
+                    oListJobs.appendChild(entry);
+                }
+            }
+        }
+
+        function errData(err)
+        {
+            console.log('Error!')
+            console.log(err)
+        }
+
+        function setData() 
+        {
+            var database = firebase.database();
+            var ref = database.ref('jobInfo');
+            
+            var sjobId = parseInt(document.getElementById("jobId").value);
+            var sjobName = document.getElementById("jobName").value;
+            var sjobDesc = document.getElementById("jobDesc").value;
+            var shrate = parseInt(document.getElementById("hrate").value);
+            console.log(sjobId);
+            var data = 
+            {
+                jobName: sjobName,
+                jobDesc: sjobDesc,
+                hrate: shrate
+            }
+            ref.child(sjobId).set(data);
+            ref = database.ref('jobInfo/'+ sjobId);
+            ref.once('value', gotData1, errData);
+        }
+
+        function deleteData()
+        {
+            var database = firebase.database();
+            djobId = parseInt(document.getElementById("jobId").value);
+
+            //ref = database.ref('StudentInfo');
+            //ref.child(djobId).set(null);
+
+            ref = database.ref('jobInfo/' + djobId);
+            ref.set(null);
+        }
+    </script>
+</html>

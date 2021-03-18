@@ -18,23 +18,23 @@
                         <div class = "container-lg ">
                             <div class="display-4 text-center">Create a job posting</div>
                             <div class="row">
-                                <label for="jobTitle" class="col mx-2">Job Title</label>
-                                <label for="hourlyRate" class="col mx-2">Hourly Rate</label>
-                                <label for="companyName" class="col mx-2">Company Name</label>
-                                <label for="companyEmail" class="col mx-2">Company Email</label>
+                                <label for="aField1" class="col mx-2">Job Title</label>
+                                <label for="bField1" class="col mx-2">Hourly Rate</label>
+                                <label for="cField1" class="col mx-2">Company Name</label>
+                                <label for="dField1" class="col mx-2">Company Email</label>
                             </div>
                             <div class="row">
-                                <input type="text" id="jobTitle" class="form-control col mx-2">
+                                <input type="text" id="aField1" class="form-control col mx-2">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">$</span>
-                                    <input type="text" id="hourlyRate" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Hourly Rate">
+                                    <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Hourly Rate">
                                   </div>
-                                <input type="text" id="companyName" class="form-control col mx-2">
-                                <input type="email" id="companyEmail" class="form-control col mx-2" placeholder="name@example.com">
+                                <input type="text" id="cField1" class="form-control col mx-2">
+                                <input type="email" id="dField1" class="form-control col mx-2" placeholder="name@example.com">
                             </div>
                             <div class="form-group">
-                                <label for="jobDescription">Job Description</label>
-                                <textarea class="form-control" id="jobDescription" rows="10"></textarea>
+                                <label for="exampleFormControlTextarea1">Job Description</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="10"></textarea>
                                 <br>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
@@ -50,7 +50,7 @@
                             </div>
                             <div class="row">
                                 <div class="col">&nbsp;</div>
-                                <button type="button" class="btn btn-primary col" onclick="add(1)">Update</button>
+                                <button type="button" class="btn btn-info col" onclick="update(1)">Update</button>
                                 <div class="col">&nbsp;</div>
                             </div>
                         </div>
@@ -86,8 +86,8 @@
             var database = firebase.database();
             var user = firebase.auth().currentUser;
             console.log(localStorage.userID);
-            var ref = database.ref('bloom/Job Postings');
-            //ref.once('value', gotList, errData)
+            var ref = database.ref('Demo/Master List');
+            ref.once('value', gotList, errData)
     
             function gotList(data)
             {
@@ -96,7 +96,7 @@
 
                 for (i=0; i < keyValues.length;i++)
                 {
-                    ref = database.ref('bloom/Job Postings' + keyValues[i]);
+                    ref = database.ref('Demo/Master List/' + keyValues[i]);
                     ref.once('value', gotData, errData);              
                 }
             }
@@ -119,25 +119,24 @@
                 console.log(err)
             }
     
-            function add(listNo)
+            function update(listNo)
             {
-                var ref = database.ref('bloom/Job Postings');
+                var ref = database.ref('Demo/Master List');
             
-                var jobTitle = document.getElementById("jobTitle").value;
-                var hourlyRate = document.getElementById("hourlyRate").value;
-                var companyName = document.getElementById("companyName").value;
-                var companyEmail = document.getElementById("companyEmail").value;
-                var jobDescription = document.getElementById("jobDescription").value;
+                newData = [];
+                for (i=0; i < 4; i++)
+                {
+                    newData.push(document.getElementById(fields[i]+"Field"+listNo).value);
+                }
 
                 var data = 
                 {
-                    jobTitle: jobTitle,
-                    hourlyRate: hourlyRate,
-                    companyName: companyName,
-                    companyEmail: companyEmail,
-                    jobDescription: jobDescription
+                    A: newData[0],
+                    B: newData[1],
+                    C: newData[2],
+                    D: newData[3]
                 }
-                ref.push(data);
+                ref.child('SubList'+listNo).set(data);
             }
     
         </script>

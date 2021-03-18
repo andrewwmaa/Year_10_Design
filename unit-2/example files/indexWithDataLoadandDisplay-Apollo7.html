@@ -1,0 +1,166 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-database.js"></script>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+    </head>
+
+    <body class="bg-light">
+            <div class="container-fluid bg-light mt-5" >
+                <div class="row mx-1">
+                    <div class="col">
+                        <div class = "container-lg ">
+                            <div class="row">
+                                <label for="jobId" class="col mx-2">Job ID</label>
+                                <label for="jobTitle" class="col mx-2">Job Title</label>
+                                <label for="hRate" class="col mx-2">Hourly Rate</label>
+                                <label for="cName" class="col mx-2">Company Name</label>
+                                <label for="cEmail" class="col mx-2">Company Email</label>
+                            </div>
+                            <div class="row">
+                                <input type="text" id="jobId" class="form-control col mx-2">
+                                <input type="text" id="jobTitle" class="form-control col mx-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">$</span>
+                                    <input type="text" class="form-control col mx-2" id="hRate" aria-label="Amount (to the nearest dollar)" placeholder="Hourly Rate">
+                                  </div>
+                                <input type="text" id="cName" class="form-control col mx-2">
+                                <input type="email" id="cEmail" class="form-control col mx-2" placeholder="name@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="jobDesc">Job Description</label>
+                                <textarea class="form-control" id="jobDesc" rows="10"></textarea>
+                                <br>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text">Upload</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+            <button onclick = "setData()" >Set Data</button>
+            <button onclick = "deleteData()" >Delete data</button>
+            <div id='studentList'></div>
+    </body>
+    
+    <script>
+
+        var provider = new firebase.auth.EmailAuthProvider();
+
+        var config = 
+        {
+            apiKey: "AIzaSyCxbKu9UjC2GOH19mt7JPYiOo-mxocEMuA",
+            authDomain: "bloom-7e038.firebaseapp.com",
+            databaseURL: "https://bloom-7e038-default-rtdb.firebaseio.com",
+            projectId: "bloom-7e038",
+            storageBucket: "bloom-7e038.appspot.com",
+            messagingSenderId: "834274125562",
+            appId: "1:834274125562:web:ad13e32d48fc33d434cb43",
+            measurementId: "G-X0Q9L945DV"
+        };
+
+        firebase.initializeApp(config);
+        var database = firebase.database();
+        var ref = database.ref('StudentInfo');
+        ref.once('value', gotData, errData)
+
+
+        function gotData(data)
+        {
+            var studentData = data.val();
+            console.log(studentData);
+
+            if (studentData != null)
+            {
+                var keys = Object.keys(studentData);
+                console.log(keys);
+
+                for (var i = 0; i < keys.length; i++)
+                {
+                    var k = keys[i];
+                    var jobTitle = studentData[k].jobTitle;
+                    var jobDesc = studentData[k].jobDesc;
+                    var hRate = studentData[k].hRate;
+                    var cName = studentData[k].cName;
+                    var cEmail = studentData[k].cEmail;
+                    var oListStudent = document.getElementById('studentList');
+                    var entry = document.createElement('li');
+                    entry.appendChild(document.createTextNode(jobTitle + " - " + jobDesc + " - " + hRate + " - " + cName));
+                    oListStudent.appendChild(entry);
+                }
+            }
+        }
+
+        function gotData1(data)
+        {
+            var studentData = data.val();
+            console.log(studentData);
+
+            if (studentData != null)
+            {
+                var jobTitle = studentData.jobTitle;
+                var jobDesc = studentData.jobDesc;
+                var hRate = studentData.hRate;
+                var cName = studentData.cName;
+                var cEmail = studentData.cEmail;
+
+                var oListStudent = document.getElementById('studentList');
+                var entry = document.createElement('li');
+                entry.appendChild(document.createTextNode(jobTitle + " - " + jobDesc + " - " + hRate + " - " + cName + " - " + cEmail));
+                oListStudent.appendChild(entry);
+
+            }
+        }
+        function errData(err)
+        {
+            console.log('Error!')
+            console.log(err)
+        }
+
+        function setData() 
+        {
+            var database = firebase.database();
+            var ref = database.ref('StudentInfo');
+            
+            var sjobId = parseInt(document.getElementById("jobId").value);
+            var sjobTitle = document.getElementById("jobTitle").value;
+            var sjobDesc = document.getElementById("jobDesc").value;
+            var shRate = parseInt(document.getElementById("hRate").value);
+            var scName = document.getElementById("cName").value;
+            var scEmail = document.getElementById("cEmail").value;
+            console.log(sjobId);
+            var data = 
+            {
+                jobTitle: sjobTitle,
+                jobDesc: sjobDesc,
+                hRate: shRate,
+                cName: scName,
+                cEmail: scEmail
+            }
+            ref.child(sjobId).set(data);
+            ref = database.ref('StudentInfo/'+ sjobId);
+            ref.once('value', gotData1, errData);
+        }
+
+        function deleteData()
+        {
+            var database = firebase.database();
+            djobId = parseInt(document.getElementById("jobId").value);
+
+            //ref = database.ref('StudentInfo');
+            //ref.child(djobId).set(null);
+
+            ref = database.ref('StudentInfo/' + djobId);
+            ref.set(null);
+        }
+    </script>
+</html>
