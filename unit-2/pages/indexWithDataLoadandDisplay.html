@@ -49,7 +49,7 @@
             </div>
             <button onclick = "setData()" >Set Data</button>
             <button onclick = "deleteData()" >Delete data</button>
-            <div id='studentList'></div>
+            <div id='jobList'></div>
     </body>
     
     <script>
@@ -70,29 +70,29 @@
 
         firebase.initializeApp(config);
         var database = firebase.database();
-        var ref = database.ref('StudentInfo');
+        var ref = database.ref('jobInfo');
         ref.once('value', gotData, errData)
 
 
         function gotData(data)
         {
-            var studentData = data.val();
-            console.log(studentData);
+            var jobData = data.val();
+            console.log(jobData);
 
-            if (studentData != null)
+            if (jobData != null)
             {
-                var keys = Object.keys(studentData);
+                var keys = Object.keys(jobData);
                 console.log(keys);
 
                 for (var i = 0; i < keys.length; i++)
                 {
                     var k = keys[i];
-                    var jobTitle = studentData[k].jobTitle;
-                    var jobDesc = studentData[k].jobDesc;
-                    var hRate = studentData[k].hRate;
-                    var cName = studentData[k].cName;
-                    var cEmail = studentData[k].cEmail;
-                    var oListStudent = document.getElementById('studentList');
+                    var jobTitle = jobData[k].jobTitle;
+                    var jobDesc = jobData[k].jobDesc;
+                    var hRate = jobData[k].hRate;
+                    var cName = jobData[k].cName;
+                    var cEmail = jobData[k].cEmail;
+                    var oListStudent = document.getElementById('jobList');
                     var entry = document.createElement('li');
                     entry.appendChild(document.createTextNode(jobTitle + " - " + jobDesc + " - " + hRate + " - " + cName));
                     oListStudent.appendChild(entry);
@@ -102,18 +102,18 @@
 
         function gotData1(data)
         {
-            var studentData = data.val();
-            console.log(studentData);
+            var jobData = data.val();
+            console.log(jobData);
 
-            if (studentData != null)
+            if (jobData != null)
             {
-                var jobTitle = studentData.jobTitle;
-                var jobDesc = studentData.jobDesc;
-                var hRate = studentData.hRate;
-                var cName = studentData.cName;
-                var cEmail = studentData.cEmail;
+                var jobTitle = jobData.jobTitle;
+                var jobDesc = jobData.jobDesc;
+                var hRate = jobData.hRate;
+                var cName = jobData.cName;
+                var cEmail = jobData.cEmail;
 
-                var oListStudent = document.getElementById('studentList');
+                var oListStudent = document.getElementById('jobList');
                 var entry = document.createElement('li');
                 entry.appendChild(document.createTextNode(jobTitle + " - " + jobDesc + " - " + hRate + " - " + cName + " - " + cEmail));
                 oListStudent.appendChild(entry);
@@ -129,7 +129,7 @@
         function setData() 
         {
             var database = firebase.database();
-            var ref = database.ref('StudentInfo');
+            var ref = database.ref('jobInfo');
             
             var sjobId = parseInt(document.getElementById("jobId").value);
             var sjobTitle = document.getElementById("jobTitle").value;
@@ -147,7 +147,7 @@
                 cEmail: scEmail
             }
             ref.child(sjobId).set(data);
-            ref = database.ref('StudentInfo/'+ sjobId);
+            ref = database.ref('jobInfo/'+ sjobId);
             ref.once('value', gotData1, errData);
         }
 
@@ -156,10 +156,10 @@
             var database = firebase.database();
             djobId = parseInt(document.getElementById("jobId").value);
 
-            //ref = database.ref('StudentInfo');
+            //ref = database.ref('jobInfo');
             //ref.child(djobId).set(null);
 
-            ref = database.ref('StudentInfo/' + djobId);
+            ref = database.ref('jobInfo/' + djobId);
             ref.set(null);
         }
     </script>
