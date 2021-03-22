@@ -96,9 +96,9 @@ function signUp()
                 userSurname: userSurname,
                 userEmail: userEmail,
                 userPassword: userPassword,
-                userCountry: "Canada",
-                userFavouriteBook: "Book Title",
-                userFavouriteGenre: "Genre",
+                userGrade: "10",
+                userSchool: "School",
+                userInterests: "Job Interests",
                 userBio: "User biography",
             }
             ref.child(uid).set(userData);
@@ -165,7 +165,7 @@ function signIn()
                 if (user) 
                 {
                     localStorage.userID = user.uid;
-                    window.location = './pages/data.html';
+                    window.location = 'pages/dashboard.html';
                 }
             });
         }).catch((error) => 
@@ -182,9 +182,9 @@ function saveProfile()
 {
     let userFirstName = document.getElementById("userFirstName").value 
     let userSurname = document.getElementById("userSurname").value 
-    let userCountry = document.getElementById("userCountry").value 
-    let userFavouriteBook = document.getElementById("userFavouriteBook").value 
-    let userFavouriteGenre = document.getElementById("userFavouriteGenre").value 
+    let userGrade = document.getElementById("userGrade").value 
+    let userSchool = document.getElementById("userSchool").value 
+    let userInterests = document.getElementById("userInterests").value 
     let userBio = document.getElementById("userBio").value
     var userFirstNameFormatValidate = /^([A-Za-z.\s_-])/; 
     var checkUserFirstNameValid = userFirstName.match(userFirstNameFormatValidate);
@@ -199,14 +199,14 @@ function saveProfile()
         {
             userFirstName: userFirstName,
             userSurname: userSurname,
-            userCountry: userCountry,
-            userFavouriteBook: userFavouriteBook,
-            userFavouriteGenre: userFavouriteGenre,
+            userGrade: userGrade,
+            userSchool: userSchool,
+            userInterests: userInterests,
             userBio: userBio
         }
         firebaseRef.child(localStorage.userID).set(userData);
         console.log("Profile Updated");
-        window.location="data.html";
+        window.location="dashboard.html";
     }
 }
 

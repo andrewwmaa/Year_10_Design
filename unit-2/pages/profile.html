@@ -24,16 +24,16 @@
                                     <small id="userSurnameError" class="form-text text-danger" style="display:none">Please fill the field.</small>
                                 </div>
                                 <div class="form-group">
-                                    <label for="userCountry">Country</label>
-                                    <input type="text" class="form-control" id="userCountry" placeholder="Canada">
+                                    <label for="userGrade">Grade</label>
+                                    <input type="text" class="form-control" id="userGrade" placeholder="10">
                                 </div>
                                 <div class="form-group">
-                                    <label for="userFavouriteSchool">School</label>
-                                    <input type="text" class="form-control" id="userFavouriteSchool" placeholder="Book Title">
+                                    <label for="userSchool">School</label>
+                                    <input type="text" class="form-control" id="userSchool" placeholder="Book Title">
                                 </div>
                                 <div class="form-group">
-                                    <label for="userFavouriteGenre">FavouriteGenre</label>
-                                    <input type="text" class="form-control" id="userFavouriteGenre" placeholder="Genre">
+                                    <label for="userInterests">Interests</label>
+                                    <input type="text" class="form-control" id="userInterests" placeholder="Genre">
                                 </div>
                                 <div class="form-group">
                                     <label for="userBio">Biography<span class="text-danger ml-1">*</span></label>
@@ -41,7 +41,7 @@
                                     <small id="userBioError" class="form-text text-danger" style="display:none">Please enter a bio.</small>
                                 </div>
                                 <button type="button" class="btn btn-outline-primary btn-block text-uppercase mb-3" onclick="saveProfile()">Save</button>
-                                <button type="button" class="btn btn-outline-secondary btn-block text-uppercase" onclick="window.location='data.html';">Cancel</button>
+                                <button type="button" class="btn btn-outline-secondary btn-block text-uppercase" onclick="window.location='dashboard.html';">Cancel</button>
                             </div>
                         </div>
                     </div>
@@ -85,18 +85,18 @@
                 profile = data.val();
                 userFName = profile.userFirstName;
                 userLName = profile.userSurname;
-                userCtry = profile.userCountry;
+                userCtry = profile.userGrade;
                 userBook = profile.userSchool;
-                userGenre = profile.userFavouriteGenre;
+                userGenre = profile.userInterests;
                 userB = profile.userBio;
 
                 console.log(userFName);
                 console.log(userLName);
                 document.getElementById("userFirstName").value = userFName;
                 document.getElementById("userSurname").value = userLName;
-                document.getElementById("userCountry").value = userCtry;
+                document.getElementById("userGrade").value = userCtry;
                 document.getElementById("userSchool").value = userBook;
-                document.getElementById("userFavouriteGenre").value = userGenre;
+                document.getElementById("userInterests").value = userGenre;
                 document.getElementById("userBio").value = userB;
             }
 

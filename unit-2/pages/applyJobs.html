@@ -1,0 +1,238 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-database.js"></script>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+    </head>
+
+    <body class="bg-light">
+        <nav class="navbar navbar-light bg-light p-3">
+            <div class="d-flex col-12 col-md-3 col-lg-2 mb-2 mb-lg-0 flex-wrap flex-md-nowrap justify-content-between">
+                <a class="navbar-brand" href="#">
+                    bloom dashboard
+                </a>
+                <button class="navbar-toggler d-md-none collapsed mb-3" type="button" data-toggle="collapse" data-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="col-12 col-md-5 col-lg-8 d-flex align-items-center justify-content-md-end mt-3 mt-md-0">
+                <div>
+                    <button class="btn btn-primary" onclick="signOut()">Sign Out</button>
+                  </div>
+            </div>
+        </nav>
+                <div class="container-fluid bg-light mt-5" >
+                    <div class="row mx-1">
+                        <div class="col">
+                            <div class = "container-lg">
+                                <div class="row">
+                                    <label for="jobTitle" class="col mx-auto">Job Title</label>
+                                    <label for="hRate" class="col mx-auto">Hourly Rate</label>
+                                    <label for="cName" class="col mx-auto">Company Name</label>
+                                    <label for="cEmail" class="col mx-auto">Company Email</label>
+                                </div>
+                                <div class="row">
+                                    <input type="text" id="jobTitle" class="form-control col mx-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
+                                        <input type="text" class="form-control col mx-2" id="hRate" aria-label="Amount (to the nearest dollar)" placeholder="Hourly Rate">
+                                    </div>
+                                    <input type="text" id="cName" class="form-control col mx-2">
+                                    <input type="email" id="cEmail" class="form-control col mx-2" placeholder="name@example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="jobDesc">Job Description</label>
+                                    <textarea class="form-control" id="jobDesc" rows="10"></textarea>
+                                    <br>
+                                </div>
+                                    <div class="row mx-1">
+                                        <button class="btn btn-outline-success" onclick = "setData()" >Create Job</button>
+                                    </div>
+                                <div class="row mx-1">
+                                    <div class="row my-4"  id="jobContainer" style="min-width:100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
+            
+    </body>
+    <script src="../js/global.js"></script> 
+    <script src="../js/app.js"></script> 
+    <script>
+
+        var provider = new firebase.auth.EmailAuthProvider();
+
+        var config = 
+        {
+            apiKey: "AIzaSyCxbKu9UjC2GOH19mt7JPYiOo-mxocEMuA",
+            authDomain: "bloom-7e038.firebaseapp.com",
+            databaseURL: "https://bloom-7e038-default-rtdb.firebaseio.com",
+            projectId: "bloom-7e038",
+            storageBucket: "bloom-7e038.appspot.com",
+            messagingSenderId: "834274125562",
+            appId: "1:834274125562:web:ad13e32d48fc33d434cb43",
+            measurementId: "G-X0Q9L945DV"
+        };
+
+        firebase.initializeApp(config);
+        var database = firebase.database();
+        var ref = database.ref('jobInfo');
+        ref.once('value', gotData, errData)
+
+
+        function gotData(data)
+        {
+            var jobData = data.val();
+            console.log(jobData);
+
+            if (jobData != null)
+            {
+                var keys = Object.keys(jobData);
+                console.log(keys);
+
+                for (var i = 0; i < keys.length; i++)
+                {
+                    var k = keys[i];
+                    var jobTitle = jobData[k].jobTitle;
+                    var jobDesc = jobData[k].jobDesc;
+                    var hRate = jobData[k].hRate;
+                    var cName = jobData[k].cName;
+                    var cEmail = jobData[k].cEmail;
+                    var oListJobs = document.getElementById('jobContainer');
+                    
+                    var entryDiv1 = document.createElement('div');
+                    entryDiv1.setAttribute("class","col-12 col-md-6 col-lg-3 mb-4 mb-lg-0");
+                    entryDiv1.appendChild(document.createTextNode(""));
+                    
+                    var entryDiv2 = document.createElement('div');
+                    entryDiv2.setAttribute("class","card");
+                    entryDiv2.appendChild(document.createTextNode(""));
+
+                    var entryDiv3 = document.createElement('h5');
+                    entryDiv3.setAttribute("class","card-header");
+                    entryDiv3.appendChild(document.createTextNode(jobTitle));
+
+                    var entryDiv4 = document.createElement('div');
+                    entryDiv4.setAttribute("class","card-body");
+                    entryDiv4.appendChild(document.createTextNode(""));
+
+                    var entryDiv5 = document.createElement('h5');
+                    entryDiv5.setAttribute("class","card-title");
+                    entryDiv5.appendChild(document.createTextNode("$" + hRate + " per hour"));
+                    
+                    var entryDiv6 = document.createElement('p');
+                    entryDiv6.setAttribute("class","card-text ");
+                    entryDiv6.appendChild(document.createTextNode(jobDesc));
+
+                    var entryDiv7 = document.createElement('p');
+                    entryDiv7.setAttribute("class","card-text text-success");
+                    entryDiv7.appendChild(document.createTextNode("Contact at " + cEmail));
+                    
+                    oListJobs.appendChild(entryDiv1);
+                    entryDiv1.appendChild(entryDiv2);
+                    entryDiv2.appendChild(entryDiv3);
+                    entryDiv2.appendChild(entryDiv4);
+                    entryDiv4.appendChild(entryDiv5);
+                    entryDiv4.appendChild(entryDiv6);
+                    entryDiv4.appendChild(entryDiv7);
+                }
+            }
+        }
+
+        function gotData1(data)
+        {
+            var jobData = data.val();
+            console.log(jobData);
+
+            if (jobData != null)
+            {
+                var jobTitle = jobData.jobTitle;
+                var jobDesc = jobData.jobDesc;
+                var hRate = jobData.hRate;
+                var cName = jobData.cName;
+                var cEmail = jobData.cEmail;
+
+                var oListJobs = document.getElementById('jobContainer');
+                
+                var entryDiv1 = document.createElement('div');
+                entryDiv1.setAttribute("class","col-12 col-md-6 col-lg-3 mb-4 mb-lg-0");
+                entryDiv1.appendChild(document.createTextNode(""));
+                
+                var entryDiv2 = document.createElement('div');
+                entryDiv2.setAttribute("class","card");
+                entryDiv2.appendChild(document.createTextNode(""));
+
+                var entryDiv3 = document.createElement('h5');
+                entryDiv3.setAttribute("class","card-header");
+                entryDiv3.appendChild(document.createTextNode(jobTitle));
+
+                var entryDiv4 = document.createElement('div');
+                entryDiv4.setAttribute("class","card-body");
+                entryDiv4.appendChild(document.createTextNode(""));
+
+                var entryDiv5 = document.createElement('h5');
+                entryDiv5.setAttribute("class","card-title");
+                entryDiv5.appendChild(document.createTextNode("$" + hRate + " per hour"));
+                
+                var entryDiv6 = document.createElement('p');
+                entryDiv6.setAttribute("class","card-text");
+                entryDiv6.appendChild(document.createTextNode(jobDesc));
+
+                var entryDiv7 = document.createElement('p');
+                entryDiv7.setAttribute("class","card-text text-success");
+                entryDiv7.appendChild(document.createTextNode("Contact at " + cEmail));
+                
+                oListJobs.appendChild(entryDiv1);
+                entryDiv1.appendChild(entryDiv2);
+                entryDiv2.appendChild(entryDiv3);
+                entryDiv2.appendChild(entryDiv4);
+                entryDiv4.appendChild(entryDiv5);
+                entryDiv4.appendChild(entryDiv6);
+                entryDiv4.appendChild(entryDiv7);
+
+            }
+        }
+        function errData(err)
+        {
+            console.log('Error!')
+            console.log(err)
+        }
+
+        function setData() 
+        {
+            var database = firebase.database();
+            var ref = database.ref('jobInfo')
+            ref.once('value')
+            .then(function(snapshot) {
+            var numId = snapshot.numChildren();
+            var sjobId = numId + 1
+             
+            var sjobTitle = document.getElementById("jobTitle").value;
+            var sjobDesc = document.getElementById("jobDesc").value;
+            var shRate = parseInt(document.getElementById("hRate").value);
+            var scName = document.getElementById("cName").value;
+            var scEmail = document.getElementById("cEmail").value;
+            console.log(sjobId);
+            var data = 
+            {
+                jobTitle: sjobTitle,
+                jobDesc: sjobDesc,
+                hRate: shRate,
+                cName: scName,
+                cEmail: scEmail
+            }
+            ref.child(sjobId).set(data);
+            ref = database.ref('jobInfo/'+ sjobId);
+            ref.once('value', gotData1, errData);
+        });
+        }
+    </script>
+</html>
