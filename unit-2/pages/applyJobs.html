@@ -35,7 +35,7 @@
                                     <label for="jobTitle" class="col mx-auto">Job Title</label>
                                     <label for="hRate" class="col mx-auto">Hourly Rate</label>
                                     <label for="cName" class="col mx-auto">Company Name</label>
-                                    <label for="cEmail" class="col mx-auto">Company Email</label>
+                                    <label for="cContact" class="col mx-auto">Company Email/Phone</label>
                                 </div>
                                 <div class="row">
                                     <input type="text" id="jobTitle" class="form-control col mx-2">
@@ -44,7 +44,7 @@
                                         <input type="text" class="form-control col mx-2" id="hRate" aria-label="Amount (to the nearest dollar)" placeholder="Hourly Rate">
                                     </div>
                                     <input type="text" id="cName" class="form-control col mx-2">
-                                    <input type="email" id="cEmail" class="form-control col mx-2" placeholder="name@example.com">
+                                    <input type="email" id="cContact" class="form-control col mx-2" placeholder="name@example.com">
                                 </div>
                                 <div class="form-group">
                                     <label for="jobDesc">Job Description</label>
@@ -105,7 +105,7 @@
                     var jobDesc = jobData[k].jobDesc;
                     var hRate = jobData[k].hRate;
                     var cName = jobData[k].cName;
-                    var cEmail = jobData[k].cEmail;
+                    var cContact = jobData[k].cContact;
                     var oListJobs = document.getElementById('jobContainer');
                     
                     var entryDiv1 = document.createElement('div');
@@ -134,7 +134,7 @@
 
                     var entryDiv7 = document.createElement('p');
                     entryDiv7.setAttribute("class","card-text text-success");
-                    entryDiv7.appendChild(document.createTextNode("Contact at " + cEmail));
+                    entryDiv7.appendChild(document.createTextNode("Contact at " + cContact));
                     
                     oListJobs.appendChild(entryDiv1);
                     entryDiv1.appendChild(entryDiv2);
@@ -158,7 +158,7 @@
                 var jobDesc = jobData.jobDesc;
                 var hRate = jobData.hRate;
                 var cName = jobData.cName;
-                var cEmail = jobData.cEmail;
+                var cContact = jobData.cContact;
 
                 var oListJobs = document.getElementById('jobContainer');
                 
@@ -188,7 +188,7 @@
 
                 var entryDiv7 = document.createElement('p');
                 entryDiv7.setAttribute("class","card-text text-success");
-                entryDiv7.appendChild(document.createTextNode("Contact at " + cEmail));
+                entryDiv7.appendChild(document.createTextNode("Contact at " + cContact));
                 
                 oListJobs.appendChild(entryDiv1);
                 entryDiv1.appendChild(entryDiv2);
@@ -219,7 +219,7 @@
             var sjobDesc = document.getElementById("jobDesc").value;
             var shRate = parseInt(document.getElementById("hRate").value);
             var scName = document.getElementById("cName").value;
-            var scEmail = document.getElementById("cEmail").value;
+            var scContact = document.getElementById("cContact").value;
             console.log(sjobId);
             var data = 
             {
@@ -227,7 +227,7 @@
                 jobDesc: sjobDesc,
                 hRate: shRate,
                 cName: scName,
-                cEmail: scEmail
+                cContact: scContact
             }
             ref.child(sjobId).set(data);
             ref = database.ref('jobInfo/'+ sjobId);
