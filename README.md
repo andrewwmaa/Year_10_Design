@@ -1,2 +1,2 @@
 # Year_10_Design
-Year 10 Design files
+Files from Year 10 Design class, using HTML/CSS/JavaScript and experimenting with BootStrap, jQuery, Firebase, and some APIs.
